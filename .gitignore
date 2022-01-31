@@ -1,9 +1,7 @@
 /__pycache__/*
-/delete/*
-/merge/*
+/workdir/*
 /gen/*
 /source/*
 /template/*
-/extract/*
 .DS_Store
 /out.txt
