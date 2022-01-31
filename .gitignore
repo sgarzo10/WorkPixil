@@ -1,5 +1,9 @@
-# Object file
-*.o
-
-# Ada Library Information
-*.ali
+/__pycache__/*
+/delete/*
+/merge/*
+/gen/*
+/source/*
+/template/*
+/extract/*
+.DS_Store
+/out.txt
