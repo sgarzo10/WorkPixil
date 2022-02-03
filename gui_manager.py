@@ -13,165 +13,226 @@ class GuiManager:
         }
         self.list_col = ['COL_READ', 'COL_GEN', 'COL_MERGE', 'COL_EXT', 'COL_DEL']
         self.cmd_list = ['read', 'gen', 'merge', 'ext', 'del']
+        self.size_listbox = (25, 25)
+        self.size_text_filename = (12, 1)
+        self.size_text_number = (7, 1)
+        self.size_text_reg_exp = (20, 1)
         operation_list_column = [
-            [simpleGui.Text("SCEGLI L'OPERAZIONE", font=self.config['font'])],
             [
-                simpleGui.Combo(self.cmd_list, size=(45, 1), enable_events=True, key='LIST_OP', font=self.config['font'])
+                simpleGui.Text("SCEGLI L'OPERAZIONE", key='LBL_OP', size=(50, 1))
             ],
-            [simpleGui.Text("", size=(5, 2))],
-            [simpleGui.HorizontalSeparator()],
-            [simpleGui.Text("", key="LBL_HELP", font=self.config['font'])],
+            [
+                simpleGui.Combo(self.cmd_list, enable_events=True, key='LIST_OP', readonly=True)
+            ],
+            [
+                simpleGui.Text("")
+            ],
+            [
+                simpleGui.HorizontalSeparator()
+            ],
+            [
+                simpleGui.Multiline("", disabled=True, key="LBL_HELP", no_scrollbar=True, expand_x=True, expand_y=True, text_color="white", background_color="#64778d", border_width=0)
+            ]
         ]
         spalla_destra = {
             "COL_READ": [
                 [
-                    simpleGui.Text("FILE PIXIL SORGENTE", size=(25, 1), font=self.config['font']),
-                    simpleGui.In(size=(55, 1), enable_events=False, key="FILE_SOURCE", font=self.config['font']),
-                    simpleGui.FileBrowse(initial_folder=str(Path(__file__).parent.resolve()) + "/source", font=self.config['font'], button_text="BROWSE"),
+                    simpleGui.Text("FILE PIXIL SORGENTE"),
+                    simpleGui.In(enable_events=False, key="FILE_SOURCE"),
+                    simpleGui.FileBrowse(initial_folder=str(Path(__file__).parent.resolve()) + "/source", button_text="BROWSE"),
                 ],
                 [
-                    simpleGui.Text("", size=(77, 1)),
-                    simpleGui.Text("REPORT SU FILE DI TESTO", size=(23, 1), font=self.config['font']),
+                    simpleGui.Text("REPORT SU FILE DI TESTO", expand_x=True),
                     simpleGui.Checkbox('', key="PRINT_FILE_READ", default=False)
                 ],
                 [
-                    simpleGui.Text("PREMI IL PULSANTE PER LEGGERE I LAYER CONTENUTI NEL FILE", size=(80, 1), font=self.config['font']),
-                    simpleGui.Button("LEGGI FILE", key="BUTTON_READ", font=self.config['font'])
+                    simpleGui.Text("PREMI IL PULSANTE PER LEGGERE I LAYER CONTENUTI NEL FILE", expand_x=True),
+                    simpleGui.Button("LEGGI FILE", key="BUTTON_READ")
                 ],
                 [
-                    simpleGui.Text("LISTA DEI LAYER (IN ORDINE) CONTENUTI NEL FILE SELEZIONATO", size=(80, 1), font=self.config['font']),
+                    simpleGui.HorizontalSeparator()
                 ],
                 [
-                    simpleGui.Listbox(values=[], enable_events=False, size=(50, 20), key="FILE_CTX", visible=False, font=self.config['font'])
+                    simpleGui.Text("LAYER (IN ORDINE) CONTENUTI NEL FILE SELEZIONATO"),
+                ],
+                [
+                    simpleGui.Listbox(values=[], select_mode=simpleGui.LISTBOX_SELECT_MODE_EXTENDED, enable_events=False, key="FILE_CTX", visible=False, size=self.size_listbox)
                 ]
             ],
             "COL_GEN": [
                 [
-                    simpleGui.Text("FILE PIXIL SORGENTE", size=(25, 1), font=self.config['font']),
-                    simpleGui.In(size=(55, 1), enable_events=False, key="FILE_GEN_SOURCE", font=self.config['font']),
-                    simpleGui.FileBrowse(initial_folder=str(Path(__file__).parent.resolve()) + "/source", font=self.config['font'], button_text="BROWSE"),
+                    simpleGui.Text("FILE PIXIL SORGENTE", expand_x=True),
+                    simpleGui.In(enable_events=False, key="FILE_GEN_SOURCE"),
+                    simpleGui.FileBrowse(initial_folder=str(Path(__file__).parent.resolve()) + "/source", button_text="BROWSE"),
                 ],
                 [
-                    simpleGui.Text("FILE JSON TEMPLATE", size=(25, 1), font=self.config['font']),
-                    simpleGui.In(size=(55, 1), enable_events=False, key="FILE_GEN_TEMPLATE", font=self.config['font']),
-                    simpleGui.FileBrowse(initial_folder=str(Path(__file__).parent.resolve()) + "/template", font=self.config['font'], button_text="BROWSE"),
+                    simpleGui.Text("FILE JSON TEMPLATE", expand_x=True),
+                    simpleGui.In(enable_events=False, key="FILE_GEN_TEMPLATE"),
+                    simpleGui.FileBrowse(initial_folder=str(Path(__file__).parent.resolve()) + "/template", button_text="BROWSE"),
                 ],
                 [
-                    simpleGui.Text("", size=(65, 1)),
-                    simpleGui.Text("NUMERO DI IMMAGINI DA GENERARE", size=(30, 1), font=self.config['font']),
-                    simpleGui.In(size=(5, 1), enable_events=False, default_text="1", key="NUM_FILE_GEN", font=self.config['font'])
+                    simpleGui.Text("NUMERO DI IMMAGINI DA GENERARE", expand_x=True),
+                    simpleGui.In(enable_events=False, default_text="1", key="NUM_FILE_GEN", size=self.size_text_number)
                 ],
                 [
-                    simpleGui.Text("", size=(77, 1)),
-                    simpleGui.Text("REPORT SU FILE DI TESTO", size=(23, 1), font=self.config['font']),
+                    simpleGui.Text("REPORT SU FILE DI TESTO", expand_x=True),
                     simpleGui.Checkbox('', key="PRINT_FILE_GEN", default=False)
                 ],
                 [
-                    simpleGui.Text("PREMI IL PULSANTE PER GENERARE UN'IMMAGINE", size=(75, 1), font=self.config['font']),
-                    simpleGui.Button("GENERA IMMAGINE", key="BUTTON_GEN", font=self.config['font'])
+                    simpleGui.Text("PREMI IL PULSANTE PER GENERARE UN'IMMAGINE", expand_x=True),
+                    simpleGui.Button("GENERA IMMAGINE", key="BUTTON_GEN")
                 ],
                 [
-                    simpleGui.Text("IMMAGINE GENERATA", size=(20, 1), font=self.config['font']),
-                    simpleGui.Text("LISTA DEI LAYER (IN ORDINE) CONTENUTI NELL'IMMAGINE GENERATA", size=(60, 1), font=self.config['font']),
+                    simpleGui.HorizontalSeparator()
                 ],
                 [
-                    simpleGui.Image(key="IMAGE_GEN"),
-                    simpleGui.Listbox(values=[], enable_events=False, size=(50, 20), key="FILE_CTX_GEN", visible=False, font=self.config['font'])
+                    simpleGui.Column([
+                        [
+                            simpleGui.Text("IMMAGINE GENERATA")
+                        ],
+                        [
+                            simpleGui.Image(key="IMAGE_GEN", expand_y=True)
+                        ]
+                    ], expand_y=True, expand_x=True),
+                    simpleGui.Column([
+                        [
+                            simpleGui.Text("LAYER (IN ORDINE) CONTENUTI NELL'IMMAGINE")
+                        ],
+                        [
+                            simpleGui.Listbox(values=[], select_mode=simpleGui.LISTBOX_SELECT_MODE_EXTENDED, enable_events=False, key="FILE_CTX_GEN", visible=False, size=self.size_listbox)
+                        ]
+                    ], expand_y=True, expand_x=True)
                 ]
             ],
             "COL_MERGE": [
                 [
-                    simpleGui.Text("FILE PIXIL SORGENTE", size=(25, 1), font=self.config['font']),
-                    simpleGui.In(size=(55, 1), enable_events=False, key="FILE_MERGE_SOURCE", font=self.config['font']),
-                    simpleGui.FileBrowse(initial_folder=str(Path(__file__).parent.resolve()) + "/source", button_text="BROWSE", font=self.config['font']),
+                    simpleGui.Text("FILE PIXIL SORGENTE", expand_x=True),
+                    simpleGui.In(enable_events=False, key="FILE_MERGE_SOURCE"),
+                    simpleGui.FileBrowse(initial_folder=str(Path(__file__).parent.resolve()) + "/source", button_text="BROWSE"),
                 ],
                 [
-                    simpleGui.Text("FILE PIXIL DA MERGIARE", size=(25, 1), font=self.config['font']),
-                    simpleGui.In(size=(55, 1), enable_events=False, key="FILE_MERGE_ADD", font=self.config['font']),
-                    simpleGui.FileBrowse(initial_folder=str(Path(__file__).parent.resolve()) + "/source", button_text="BROWSE", font=self.config['font']),
+                    simpleGui.Text("FILE PIXIL DA MERGIARE", expand_x=True),
+                    simpleGui.In(enable_events=False, key="FILE_MERGE_ADD"),
+                    simpleGui.FileBrowse(initial_folder=str(Path(__file__).parent.resolve()) + "/source", button_text="BROWSE"),
                 ],
                 [
-                    simpleGui.Text("SCEGLI LA POSIZIONE A CUI INSERIRE I NUOVI LAYER", size=(80, 1), font=self.config['font']),
-                    simpleGui.In(size=(10, 1), enable_events=False, key="POS_MERGE", font=self.config['font'])
+                    simpleGui.Text("SCEGLI LA POSIZIONE A CUI INSERIRE I NUOVI LAYER", expand_x=True),
+                    simpleGui.In(enable_events=False, key="POS_MERGE", size=self.size_text_number)
                 ],
                 [
-                    simpleGui.Text("", size=(77, 1)),
-                    simpleGui.Text("REPORT SU FILE DI TESTO", size=(23, 1), font=self.config['font']),
+                    simpleGui.Text("REPORT SU FILE DI TESTO", expand_x=True),
                     simpleGui.Checkbox('', key="PRINT_FILE_MERGE", default=False)
                 ],
                 [
-                    simpleGui.Text("PREMI IL PULSANTE PER UNIRE I DUE FILE", size=(80, 1), font=self.config['font']),
-                    simpleGui.Button("MERGIA FILE", key="BUTTON_MERGE", font=self.config['font'])
+                    simpleGui.Text("PREMI IL PULSANTE PER UNIRE I DUE FILE", expand_x=True),
+                    simpleGui.Button("MERGIA FILE", key="BUTTON_MERGE")
                 ],
                 [
-                    simpleGui.Text(self.config['strings']['confirm_merge'], size=(60, 5), font=self.config['font']),
-                    simpleGui.In(size=(20, 1), enable_events=False, key="NAME_MERGE", default_text="finale.pixil", font=self.config['font']),
-                    simpleGui.Button("CONFERMA\nMERGE", key="BUTTON_MERGE_CONFIRM", font=self.config['font'])
+                    simpleGui.HorizontalSeparator()
                 ],
                 [
-                    simpleGui.Text("LISTA DEI LAYER (IN ORDINE) CONTENUTI NEL FILE PIXIL GENERATO DAL MERGE", size=(80, 1), font=self.config['font']),
+                    simpleGui.Text("LAYER (IN ORDINE) CONTENUTI NEL FILE PIXIL GENERATO DAL MERGE"),
                 ],
-                [simpleGui.Listbox(values=[], enable_events=False, size=(50, 20), key="FILE_CTX_MERGE", visible=False, font=self.config['font'])]
+                [
+                    simpleGui.Listbox(values=[], select_mode=simpleGui.LISTBOX_SELECT_MODE_EXTENDED, enable_events=False, key="FILE_CTX_MERGE", visible=False, size=self.size_listbox)
+                ],
+                [
+                    simpleGui.HorizontalSeparator()
+                ],
+                [
+                    simpleGui.Text("NOME DEL FILE PIXIL CHE VIENE GENERATO ALLA CONFERMA DEL MERGE", expand_x=True),
+                    simpleGui.In(enable_events=False, key="NAME_MERGE", default_text="finale.pixil", size=self.size_text_filename)
+                ],
+                [
+                    simpleGui.Multiline(self.config['strings']['confirm_merge'], disabled=True, no_scrollbar=True, expand_x=True, expand_y=True, text_color="white", background_color="#64778d", border_width=0),
+                    simpleGui.Button("\nCONFERMA\nMERGE\n", key="BUTTON_MERGE_CONFIRM")
+                ],
             ],
             "COL_EXT": [
                 [
-                    simpleGui.Text("FILE PIXIL SORGENTE", size=(25, 1), font=self.config['font']),
-                    simpleGui.In(size=(55, 1), enable_events=False, key="FILE_EXT_SOURCE", font=self.config['font']),
-                    simpleGui.FileBrowse(initial_folder=str(Path(__file__).parent.resolve()) + "/source", button_text="BROWSE", font=self.config['font']),
+                    simpleGui.Text("FILE PIXIL SORGENTE", expand_x=True),
+                    simpleGui.In(enable_events=False, key="FILE_EXT_SOURCE"),
+                    simpleGui.FileBrowse(initial_folder=str(Path(__file__).parent.resolve()) + "/source", button_text="BROWSE"),
                 ],
                 [
-                    simpleGui.Text("SCEGLI I LAYER DA ESTARRE (SEPARATI DA VIRGOLA)", size=(65, 1), font=self.config['font']),
-                    simpleGui.In(size=(15, 1), enable_events=False, key="EXP_EXT", font=self.config['font'])
+                    simpleGui.Text("SCEGLI I LAYER DA ESTARRE (SEPARATI DA VIRGOLA)", expand_x=True),
+                    simpleGui.In(enable_events=False, key="EXP_EXT", size=self.size_text_reg_exp)
                 ],
                 [
-                    simpleGui.Text("", size=(77, 1)),
-                    simpleGui.Text("REPORT SU FILE DI TESTO", size=(23, 1), font=self.config['font']),
+                    simpleGui.Text("REPORT SU FILE DI TESTO", expand_x=True),
                     simpleGui.Checkbox('', key="PRINT_FILE_EXT", default=False)
                 ],
                 [
-                    simpleGui.Text("PREMI IL PULSANTE PER CREARE UN FILE CON SOLO I LAYER SCELTI", size=(60, 1), font=self.config['font']),
-                    simpleGui.In(size=(15, 1), enable_events=False, key="NAME_EXT", default_text="export.pixil", font=self.config['font']),
-                    simpleGui.Button("ESTRAI LAYER", key="BUTTON_EXT", font=self.config['font'])
+                    simpleGui.Text("NOME DEL FILE PIXIL CHE VIENE GENERATO", expand_x=True),
+                    simpleGui.In(enable_events=False, key="NAME_EXT", default_text="export.pixil", size=self.size_text_filename)
                 ],
                 [
-                    simpleGui.Text("LISTA DEI LAYER (IN ORDINE) CONTENUTI NEL FILE PIXIL GENERATO DALL'ESTRAZIONE", size=(80, 1), font=self.config['font']),
+                    simpleGui.Text("PREMI IL PULSANTE PER CREARE UN FILE CON SOLO I LAYER SCELTI", expand_x=True),
+                    simpleGui.Button("ESTRAI LAYER", key="BUTTON_EXT")
                 ],
-                [simpleGui.Listbox(values=[], enable_events=False, size=(50, 20), key="FILE_CTX_EXT", visible=False, font=self.config['font'])]
+                [
+                    simpleGui.HorizontalSeparator()
+                ],
+                [
+                    simpleGui.Text("LAYER (IN ORDINE) CONTENUTI NEL FILE PIXIL GENERATO DALL'ESTRAZIONE"),
+                ],
+                [
+                    simpleGui.Listbox(values=[], select_mode=simpleGui.LISTBOX_SELECT_MODE_EXTENDED, enable_events=False, key="FILE_CTX_EXT", visible=False, size=self.size_listbox)
+                ]
             ],
             "COL_DEL": [
                 [
-                    simpleGui.Text("FILE PIXIL SORGENTE", size=(25, 1), font=self.config['font']),
-                    simpleGui.In(size=(55, 1), enable_events=False, key="FILE_DEL_SOURCE", font=self.config['font']),
-                    simpleGui.FileBrowse(initial_folder=str(Path(__file__).parent.resolve()) + "/source", button_text="BROWSE", font=self.config['font']),
+                    simpleGui.Text("FILE PIXIL SORGENTE", expand_x=True),
+                    simpleGui.In(enable_events=False, key="FILE_DEL_SOURCE"),
+                    simpleGui.FileBrowse(initial_folder=str(Path(__file__).parent.resolve()) + "/source", button_text="BROWSE"),
                 ],
                 [
-                    simpleGui.Text("SCEGLI I LAYER DA ELIMINARE (SEPARATI DA VIRGOLA)", size=(65, 1), font=self.config['font']),
-                    simpleGui.In(size=(15, 1), enable_events=False, key="EXP_DEL", font=self.config['font'])
+                    simpleGui.Text("SCEGLI I LAYER DA ELIMINARE (SEPARATI DA VIRGOLA)", expand_x=True),
+                    simpleGui.In(enable_events=False, key="EXP_DEL", size=self.size_text_reg_exp)
                 ],
                 [
-                    simpleGui.Text("", size=(77, 1)),
-                    simpleGui.Text("REPORT SU FILE DI TESTO", size=(23, 1), font=self.config['font']),
+                    simpleGui.Text("REPORT SU FILE DI TESTO", expand_x=True),
                     simpleGui.Checkbox('', key="PRINT_FILE_DEL", default=False)
                 ],
                 [
-                    simpleGui.Text("PREMI IL PULSANTE PER RIMUOVERE DAL FILE SORGENTE I LAYER SCELTI", size=(60, 1), font=self.config['font']),
-                    simpleGui.In(size=(15, 1), enable_events=False, key="NAME_DEL", default_text="export.pixil", font=self.config['font']),
-                    simpleGui.Button("ELIMINA LAYER", key="BUTTON_DEL", font=self.config['font'])
+                    simpleGui.Text("NOME DEL FILE PIXIL CHE VIENE GENERATO", expand_x=True),
+                    simpleGui.In(enable_events=False, key="NAME_DEL", default_text="export.pixil", size=self.size_text_filename)
                 ],
                 [
-                    simpleGui.Text("LISTA DEI LAYER (IN ORDINE) RIMASTI NEL FILE PIXIL", size=(50, 1), font=self.config['font']),
-                    simpleGui.Text("LISTA DEI LAYER (IN ORDINE) RIMOSSI DAL FILE PIXIL", size=(50, 1), font=self.config['font']),
+                    simpleGui.Text("PREMI IL PULSANTE PER RIMUOVERE DAL FILE SORGENTE I LAYER SCELTI", expand_x=True),
+                    simpleGui.Button("ELIMINA LAYER", key="BUTTON_DEL")
                 ],
                 [
-                    simpleGui.Column([[simpleGui.Listbox(values=[], enable_events=False, size=(50, 20), key="FILE_CTX_REMAIN", visible=False, font=self.config['font'])]]),
-                    simpleGui.Listbox(values=[], enable_events=False, size=(50, 20), key="FILE_CTX_DEL", visible=False, font=self.config['font'])
+                    simpleGui.HorizontalSeparator()
+                ],
+                [
+                    simpleGui.Column([
+                        [
+                            simpleGui.Text("LAYER (IN ORDINE) RIMASTI NEL FILE PIXIL"),
+                        ],
+                        [
+                            simpleGui.Listbox(values=[], select_mode=simpleGui.LISTBOX_SELECT_MODE_EXTENDED, enable_events=False, key="FILE_CTX_REMAIN", visible=False, size=self.size_listbox)
+                        ]
+                    ]),
+                    simpleGui.Column([
+                        [
+                            simpleGui.Text("LAYER RIMOSSI DAL FILE PIXIL"),
+                        ],
+                        [
+                            simpleGui.Listbox(values=[], select_mode=simpleGui.LISTBOX_SELECT_MODE_EXTENDED, enable_events=False, key="FILE_CTX_DEL", visible=False, size=self.size_listbox)
+                        ]
+                    ])
                 ]
             ]
         }
-        layout = [[simpleGui.Column(operation_list_column, size=(410, 600)), simpleGui.VSeperator()]]
+        layout = [[simpleGui.Column(operation_list_column, expand_y=True), simpleGui.VSeperator()]]
         for key, val in spalla_destra.items():
             layout[0].append(simpleGui.Column(val, key=key, visible=False))
-        self.window = simpleGui.Window("CryptoWiz Tool", layout, size=(1230, 600))
+        self.window = simpleGui.Window("CryptoWiz Tool", layout, resizable=True, finalize=True, font=self.config['font'])
+        self.screen_width = self.window.get_screen_size()[0]
+        self.screen_heigth = self.window.get_screen_size()[1]
+        self.window.set_min_size((int(self.screen_width*0.68), int(self.screen_heigth*0.70)))
+        self.window.move(int(self.screen_width*0.20), int(self.screen_heigth*0.10))
 
     def clean_all(self):
         for col in self.list_col:
@@ -196,7 +257,7 @@ class GuiManager:
             self.window["FILE_CTX_GEN"].update(layer_ctx, visible=True)
 
     def command_merge(self, source, to_add, position, print_file):
-        self.window['FILE_CTX_MERGE'].update(work_pixil.merge_pixil(source, to_add, int(position), print_file), visible=True)
+        self.window['FILE_CTX_MERGE'].update(work_pixil.merge_pixil(source, to_add, int(position) - 1, print_file), visible=True)
 
     def command_ext(self, source, express, filename, print_file):
         dest = str(Path(__file__).parent.resolve()) + "/workdir/" + filename
