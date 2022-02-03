@@ -38,7 +38,7 @@ class GuiManager:
             "COL_READ": [
                 [
                     simpleGui.Text("FILE PIXIL SORGENTE"),
-                    simpleGui.In(enable_events=False, key="FILE_SOURCE"),
+                    simpleGui.In(key="FILE_SOURCE"),
                     simpleGui.FileBrowse(initial_folder=str(Path(__file__).parent.resolve()) + "/source", button_text="BROWSE"),
                 ],
                 [
@@ -56,23 +56,23 @@ class GuiManager:
                     simpleGui.Text("LAYER (IN ORDINE) CONTENUTI NEL FILE SELEZIONATO"),
                 ],
                 [
-                    simpleGui.Listbox(values=[], select_mode=simpleGui.LISTBOX_SELECT_MODE_EXTENDED, enable_events=False, key="FILE_CTX", visible=False, size=self.size_listbox)
+                    simpleGui.Listbox(values=[], select_mode=simpleGui.LISTBOX_SELECT_MODE_EXTENDED, key="FILE_CTX", visible=False, size=self.size_listbox)
                 ]
             ],
             "COL_GEN": [
                 [
                     simpleGui.Text("FILE PIXIL SORGENTE", expand_x=True),
-                    simpleGui.In(enable_events=False, key="FILE_GEN_SOURCE"),
+                    simpleGui.In(key="FILE_GEN_SOURCE"),
                     simpleGui.FileBrowse(initial_folder=str(Path(__file__).parent.resolve()) + "/source", button_text="BROWSE"),
                 ],
                 [
                     simpleGui.Text("FILE JSON TEMPLATE", expand_x=True),
-                    simpleGui.In(enable_events=False, key="FILE_GEN_TEMPLATE"),
+                    simpleGui.In(key="FILE_GEN_TEMPLATE"),
                     simpleGui.FileBrowse(initial_folder=str(Path(__file__).parent.resolve()) + "/template", button_text="BROWSE"),
                 ],
                 [
                     simpleGui.Text("NUMERO DI IMMAGINI DA GENERARE", expand_x=True),
-                    simpleGui.In(enable_events=False, default_text="1", key="NUM_FILE_GEN", size=self.size_text_number)
+                    simpleGui.In(default_text="1", key="NUM_FILE_GEN", size=self.size_text_number)
                 ],
                 [
                     simpleGui.Text("REPORT SU FILE DI TESTO", expand_x=True),
@@ -99,7 +99,7 @@ class GuiManager:
                             simpleGui.Text("LAYER (IN ORDINE) CONTENUTI NELL'IMMAGINE")
                         ],
                         [
-                            simpleGui.Listbox(values=[], select_mode=simpleGui.LISTBOX_SELECT_MODE_EXTENDED, enable_events=False, key="FILE_CTX_GEN", visible=False, size=self.size_listbox)
+                            simpleGui.Listbox(values=[], select_mode=simpleGui.LISTBOX_SELECT_MODE_EXTENDED, key="FILE_CTX_GEN", visible=False, size=self.size_listbox)
                         ]
                     ], expand_y=True, expand_x=True)
                 ]
@@ -107,17 +107,17 @@ class GuiManager:
             "COL_MERGE": [
                 [
                     simpleGui.Text("FILE PIXIL SORGENTE", expand_x=True),
-                    simpleGui.In(enable_events=False, key="FILE_MERGE_SOURCE"),
+                    simpleGui.In(key="FILE_MERGE_SOURCE"),
                     simpleGui.FileBrowse(initial_folder=str(Path(__file__).parent.resolve()) + "/source", button_text="BROWSE"),
                 ],
                 [
                     simpleGui.Text("FILE PIXIL DA MERGIARE", expand_x=True),
-                    simpleGui.In(enable_events=False, key="FILE_MERGE_ADD"),
+                    simpleGui.In(key="FILE_MERGE_ADD"),
                     simpleGui.FileBrowse(initial_folder=str(Path(__file__).parent.resolve()) + "/source", button_text="BROWSE"),
                 ],
                 [
                     simpleGui.Text("SCEGLI LA POSIZIONE A CUI INSERIRE I NUOVI LAYER", expand_x=True),
-                    simpleGui.In(enable_events=False, key="POS_MERGE", size=self.size_text_number)
+                    simpleGui.In(key="POS_MERGE", size=self.size_text_number)
                 ],
                 [
                     simpleGui.Text("REPORT SU FILE DI TESTO", expand_x=True),
@@ -134,29 +134,29 @@ class GuiManager:
                     simpleGui.Text("LAYER (IN ORDINE) CONTENUTI NEL FILE PIXIL GENERATO DAL MERGE"),
                 ],
                 [
-                    simpleGui.Listbox(values=[], select_mode=simpleGui.LISTBOX_SELECT_MODE_EXTENDED, enable_events=False, key="FILE_CTX_MERGE", visible=False, size=self.size_listbox)
+                    simpleGui.Listbox(values=[], select_mode=simpleGui.LISTBOX_SELECT_MODE_EXTENDED, key="FILE_CTX_MERGE", visible=False, size=self.size_listbox)
                 ],
                 [
                     simpleGui.HorizontalSeparator()
                 ],
                 [
                     simpleGui.Text("NOME DEL FILE PIXIL CHE VIENE GENERATO ALLA CONFERMA DEL MERGE", expand_x=True),
-                    simpleGui.In(enable_events=False, key="NAME_MERGE", default_text="finale.pixil", size=self.size_text_filename)
+                    simpleGui.In(key="NAME_MERGE", default_text="finale.pixil", size=self.size_text_filename)
                 ],
                 [
-                    simpleGui.Multiline(self.config['strings']['confirm_merge'], disabled=True, no_scrollbar=True, expand_x=True, expand_y=True, text_color="white", background_color="#64778d", border_width=0),
+                    simpleGui.Multiline(self.config['strings']['confirm_merge'], key="LBL_CONFIRM_MERGE", disabled=True, no_scrollbar=True, expand_x=True, expand_y=True, text_color="white", background_color="#64778d", border_width=0),
                     simpleGui.Button("\nCONFERMA\nMERGE\n", key="BUTTON_MERGE_CONFIRM")
                 ],
             ],
             "COL_EXT": [
                 [
                     simpleGui.Text("FILE PIXIL SORGENTE", expand_x=True),
-                    simpleGui.In(enable_events=False, key="FILE_EXT_SOURCE"),
+                    simpleGui.In(key="FILE_EXT_SOURCE"),
                     simpleGui.FileBrowse(initial_folder=str(Path(__file__).parent.resolve()) + "/source", button_text="BROWSE"),
                 ],
                 [
                     simpleGui.Text("SCEGLI I LAYER DA ESTARRE (SEPARATI DA VIRGOLA)", expand_x=True),
-                    simpleGui.In(enable_events=False, key="EXP_EXT", size=self.size_text_reg_exp)
+                    simpleGui.In(key="EXP_EXT", size=self.size_text_reg_exp)
                 ],
                 [
                     simpleGui.Text("REPORT SU FILE DI TESTO", expand_x=True),
@@ -164,7 +164,7 @@ class GuiManager:
                 ],
                 [
                     simpleGui.Text("NOME DEL FILE PIXIL CHE VIENE GENERATO", expand_x=True),
-                    simpleGui.In(enable_events=False, key="NAME_EXT", default_text="export.pixil", size=self.size_text_filename)
+                    simpleGui.In(key="NAME_EXT", default_text="export.pixil", size=self.size_text_filename)
                 ],
                 [
                     simpleGui.Text("PREMI IL PULSANTE PER CREARE UN FILE CON SOLO I LAYER SCELTI", expand_x=True),
@@ -177,18 +177,18 @@ class GuiManager:
                     simpleGui.Text("LAYER (IN ORDINE) CONTENUTI NEL FILE PIXIL GENERATO DALL'ESTRAZIONE"),
                 ],
                 [
-                    simpleGui.Listbox(values=[], select_mode=simpleGui.LISTBOX_SELECT_MODE_EXTENDED, enable_events=False, key="FILE_CTX_EXT", visible=False, size=self.size_listbox)
+                    simpleGui.Listbox(values=[], select_mode=simpleGui.LISTBOX_SELECT_MODE_EXTENDED, key="FILE_CTX_EXT", visible=False, size=self.size_listbox)
                 ]
             ],
             "COL_DEL": [
                 [
                     simpleGui.Text("FILE PIXIL SORGENTE", expand_x=True),
-                    simpleGui.In(enable_events=False, key="FILE_DEL_SOURCE"),
+                    simpleGui.In(key="FILE_DEL_SOURCE"),
                     simpleGui.FileBrowse(initial_folder=str(Path(__file__).parent.resolve()) + "/source", button_text="BROWSE"),
                 ],
                 [
                     simpleGui.Text("SCEGLI I LAYER DA ELIMINARE (SEPARATI DA VIRGOLA)", expand_x=True),
-                    simpleGui.In(enable_events=False, key="EXP_DEL", size=self.size_text_reg_exp)
+                    simpleGui.In(key="EXP_DEL", size=self.size_text_reg_exp)
                 ],
                 [
                     simpleGui.Text("REPORT SU FILE DI TESTO", expand_x=True),
@@ -196,7 +196,7 @@ class GuiManager:
                 ],
                 [
                     simpleGui.Text("NOME DEL FILE PIXIL CHE VIENE GENERATO", expand_x=True),
-                    simpleGui.In(enable_events=False, key="NAME_DEL", default_text="export.pixil", size=self.size_text_filename)
+                    simpleGui.In(key="NAME_DEL", default_text="export.pixil", size=self.size_text_filename)
                 ],
                 [
                     simpleGui.Text("PREMI IL PULSANTE PER RIMUOVERE DAL FILE SORGENTE I LAYER SCELTI", expand_x=True),
@@ -211,7 +211,7 @@ class GuiManager:
                             simpleGui.Text("LAYER (IN ORDINE) RIMASTI NEL FILE PIXIL"),
                         ],
                         [
-                            simpleGui.Listbox(values=[], select_mode=simpleGui.LISTBOX_SELECT_MODE_EXTENDED, enable_events=False, key="FILE_CTX_REMAIN", visible=False, size=self.size_listbox)
+                            simpleGui.Listbox(values=[], select_mode=simpleGui.LISTBOX_SELECT_MODE_EXTENDED, key="FILE_CTX_REMAIN", visible=False, size=self.size_listbox)
                         ]
                     ]),
                     simpleGui.Column([
@@ -219,7 +219,7 @@ class GuiManager:
                             simpleGui.Text("LAYER RIMOSSI DAL FILE PIXIL"),
                         ],
                         [
-                            simpleGui.Listbox(values=[], select_mode=simpleGui.LISTBOX_SELECT_MODE_EXTENDED, enable_events=False, key="FILE_CTX_DEL", visible=False, size=self.size_listbox)
+                            simpleGui.Listbox(values=[], select_mode=simpleGui.LISTBOX_SELECT_MODE_EXTENDED, key="FILE_CTX_DEL", visible=False, size=self.size_listbox)
                         ]
                     ])
                 ]
@@ -233,6 +233,8 @@ class GuiManager:
         self.screen_heigth = self.window.get_screen_size()[1]
         self.window.set_min_size((int(self.screen_width*0.68), int(self.screen_heigth*0.70)))
         self.window.move(int(self.screen_width*0.20), int(self.screen_heigth*0.10))
+        self.window['LBL_HELP'].set_cursor("arrow")
+        self.window['LBL_CONFIRM_MERGE'].set_cursor("arrow")
 
     def clean_all(self):
         for col in self.list_col:
