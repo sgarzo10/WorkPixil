@@ -17,6 +17,7 @@ class GuiManager:
         self.size_text_filename = (12, 1)
         self.size_text_number = (7, 1)
         self.size_text_reg_exp = (20, 1)
+        self.size_text_confirm_merge = (70, 4)
         operation_list_column = [
             [
                 simpleGui.Text("SCEGLI L'OPERAZIONE", key='LBL_OP', size=(50, 1))
@@ -144,8 +145,8 @@ class GuiManager:
                     simpleGui.In(key="NAME_MERGE", default_text="finale.pixil", size=self.size_text_filename)
                 ],
                 [
-                    simpleGui.Multiline(self.config['strings']['confirm_merge'], key="LBL_CONFIRM_MERGE", disabled=True, no_scrollbar=True, expand_x=True, expand_y=True, text_color="white", background_color="#64778d", border_width=0),
-                    simpleGui.Button("\nCONFERMA\nMERGE\n", key="BUTTON_MERGE_CONFIRM")
+                    simpleGui.Multiline(self.config['strings']['confirm_merge'], key="LBL_CONFIRM_MERGE", disabled=True, no_scrollbar=True, expand_x=True, text_color="white", background_color="#64778d", border_width=0, size=self.size_text_confirm_merge),
+                    simpleGui.Button("CONFERMA\nMERGE", key="BUTTON_MERGE_CONFIRM", expand_y=True)
                 ],
             ],
             "COL_EXT": [
@@ -229,10 +230,9 @@ class GuiManager:
         for key, val in spalla_destra.items():
             layout[0].append(simpleGui.Column(val, key=key, visible=False))
         self.window = simpleGui.Window("CryptoWiz Tool", layout, resizable=True, finalize=True, font=self.config['font'])
-        self.screen_width = self.window.get_screen_size()[0]
-        self.screen_heigth = self.window.get_screen_size()[1]
-        self.window.set_min_size((int(self.screen_width*0.68), int(self.screen_heigth*0.70)))
-        self.window.move(int(self.screen_width*0.20), int(self.screen_heigth*0.10))
+        self.screen_width, self.screen_heigth = self.window.get_screen_size()
+        self.window.set_min_size((int(self.screen_width*0.68), int(self.screen_heigth*0.80)))
+        self.window.move(int(self.screen_width*0.20), int(self.screen_heigth*0.07))
         self.window['LBL_HELP'].set_cursor("arrow")
         self.window['LBL_CONFIRM_MERGE'].set_cursor("arrow")
 
