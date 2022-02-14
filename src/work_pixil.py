@@ -46,6 +46,7 @@ def write_file(filename, ctx, json=False):
 
 
 def print_all_layers(source, print_file=False):
+    makedirs("../workdir", exist_ok=True)
     to_ret = []
     to_write = ""
     index = 1
@@ -58,9 +59,9 @@ def print_all_layers(source, print_file=False):
     return to_ret
 
 
-def gen_img(source, layers, print_file, path_out="gen/final.png"):
+def gen_img(source, layers, print_file, path_out="../gen/final.png"):
     # ctx_json['frames'][0]['layers'].reverse()
-    makedirs("gen", exist_ok=True)
+    makedirs("../gen", exist_ok=True)
     final_layers = []
     to_write = ""
     to_ret = []
@@ -89,23 +90,23 @@ def gen_img(source, layers, print_file, path_out="gen/final.png"):
         final_layers[0].paste(lay, (0, 0), lay)
     final_layers[0].save(f"{path_out}")
     if print_file:
-        write_file(f"{path_out.split('.')[0]}.txt", to_write)
-    return path_out, to_ret
+        write_file(f"{path_out.split('.png')[0]}.txt", to_write)
+    return to_ret
 
 
-def merge_pixil(source, merge, index, print_file, path_out="workdir/merge_definitivo.pixil"):
-    makedirs("workdir", exist_ok=True)
+def merge_pixil(source, merge, index, print_file, path_out="../workdir/merge_definitivo.pixil"):
+    makedirs("../workdir", exist_ok=True)
     ctx_src = read_file(source)
     ctx_merge = read_file(merge)
     for c in ctx_merge['frames'][0]['layers']:
         ctx_src['frames'][0]['layers'].insert(index, c)
         index += 1
     write_file(f"{path_out}", ctx_src, json=True)
-    return print_all_layers(f"{path_out}", f"{path_out.split('.')[0]}.txt") if print_file else print_all_layers(f"{path_out}")
+    return print_all_layers(f"{path_out}", f"{path_out.split('.pixil')[0]}.txt") if print_file else print_all_layers(f"{path_out}")
 
 
-def extract_pixil(source, extract, print_file, path_out="workdir/extract.pixil"):
-    makedirs("workdir", exist_ok=True)
+def extract_pixil(source, extract, print_file, path_out="../workdir/extract.pixil"):
+    makedirs("../workdir", exist_ok=True)
     layer_list = []
     layer_extract = []
     to_ret = []
@@ -124,12 +125,12 @@ def extract_pixil(source, extract, print_file, path_out="workdir/extract.pixil")
     ctx_src['frames'][0]['layers'] = layer_list
     write_file(f"{path_out}", ctx_src, json=True)
     if print_file:
-        write_file(f"{path_out.split('.')[0]}.txt", to_write)
+        write_file(f"{path_out.split('.pixil')[0]}.txt", to_write)
     return to_ret
 
 
-def delete_layer(source, delete, print_file, path_out="workdir/remain.pixil"):
-    makedirs("workdir", exist_ok=True)
+def delete_layer(source, delete, print_file, path_out="../workdir/remain.pixil"):
+    makedirs("../workdir", exist_ok=True)
     layer_list = []
     layer_delete = []
     to_write = ""
@@ -151,8 +152,8 @@ def delete_layer(source, delete, print_file, path_out="workdir/remain.pixil"):
     ctx_src['frames'][0]['layers'] = layer_list
     write_file(f"{path_out}", ctx_src, json=True)
     if print_file:
-        write_file(f"{path_out.split('.')[0]}_delete.txt", to_write)
-        write_file(f"{path_out.split('.')[0]}.txt", to_write_remain)
+        write_file(f"{path_out.split('.pixil')[0]}_delete.txt", to_write)
+        write_file(f"{path_out.split('.pixil')[0]}.txt", to_write_remain)
     return to_ret, to_ret_remain
 
 

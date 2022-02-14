@@ -1,4 +1,3 @@
-from pathlib import Path
 import PySimpleGUI as simpleGui
 import work_pixil
 from os import replace
@@ -18,6 +17,7 @@ class GuiManager:
         self.size_text_number = (7, 1)
         self.size_text_reg_exp = (20, 1)
         self.size_text_confirm_merge = (70, 4)
+        source_path = '../source'
         operation_list_column = [
             [
                 simpleGui.Text("SCEGLI L'OPERAZIONE", key='LBL_OP', size=(50, 1))
@@ -40,7 +40,7 @@ class GuiManager:
                 [
                     simpleGui.Text("FILE PIXIL SORGENTE"),
                     simpleGui.In(key="FILE_SOURCE"),
-                    simpleGui.FileBrowse(initial_folder=str(Path(__file__).parent.resolve()) + "/source", button_text="BROWSE"),
+                    simpleGui.FileBrowse(initial_folder=source_path, button_text="BROWSE"),
                 ],
                 [
                     simpleGui.Text("REPORT SU FILE DI TESTO", expand_x=True),
@@ -64,12 +64,12 @@ class GuiManager:
                 [
                     simpleGui.Text("FILE PIXIL SORGENTE", expand_x=True),
                     simpleGui.In(key="FILE_GEN_SOURCE"),
-                    simpleGui.FileBrowse(initial_folder=str(Path(__file__).parent.resolve()) + "/source", button_text="BROWSE"),
+                    simpleGui.FileBrowse(initial_folder=source_path, button_text="BROWSE"),
                 ],
                 [
                     simpleGui.Text("FILE JSON TEMPLATE", expand_x=True),
                     simpleGui.In(key="FILE_GEN_TEMPLATE"),
-                    simpleGui.FileBrowse(initial_folder=str(Path(__file__).parent.resolve()) + "/template", button_text="BROWSE"),
+                    simpleGui.FileBrowse(initial_folder="../template", button_text="BROWSE"),
                 ],
                 [
                     simpleGui.Text("NUMERO DI IMMAGINI DA GENERARE", expand_x=True),
@@ -109,12 +109,12 @@ class GuiManager:
                 [
                     simpleGui.Text("FILE PIXIL SORGENTE", expand_x=True),
                     simpleGui.In(key="FILE_MERGE_SOURCE"),
-                    simpleGui.FileBrowse(initial_folder=str(Path(__file__).parent.resolve()) + "/source", button_text="BROWSE"),
+                    simpleGui.FileBrowse(initial_folder=source_path, button_text="BROWSE"),
                 ],
                 [
                     simpleGui.Text("FILE PIXIL DA MERGIARE", expand_x=True),
                     simpleGui.In(key="FILE_MERGE_ADD"),
-                    simpleGui.FileBrowse(initial_folder=str(Path(__file__).parent.resolve()) + "/source", button_text="BROWSE"),
+                    simpleGui.FileBrowse(initial_folder=source_path, button_text="BROWSE"),
                 ],
                 [
                     simpleGui.Text("SCEGLI LA POSIZIONE A CUI INSERIRE I NUOVI LAYER", expand_x=True),
@@ -153,7 +153,7 @@ class GuiManager:
                 [
                     simpleGui.Text("FILE PIXIL SORGENTE", expand_x=True),
                     simpleGui.In(key="FILE_EXT_SOURCE"),
-                    simpleGui.FileBrowse(initial_folder=str(Path(__file__).parent.resolve()) + "/source", button_text="BROWSE"),
+                    simpleGui.FileBrowse(initial_folder=source_path, button_text="BROWSE"),
                 ],
                 [
                     simpleGui.Text("SCEGLI I LAYER DA ESTARRE (SEPARATI DA VIRGOLA)", expand_x=True),
@@ -185,7 +185,7 @@ class GuiManager:
                 [
                     simpleGui.Text("FILE PIXIL SORGENTE", expand_x=True),
                     simpleGui.In(key="FILE_DEL_SOURCE"),
-                    simpleGui.FileBrowse(initial_folder=str(Path(__file__).parent.resolve()) + "/source", button_text="BROWSE"),
+                    simpleGui.FileBrowse(initial_folder=source_path, button_text="BROWSE"),
                 ],
                 [
                     simpleGui.Text("SCEGLI I LAYER DA ELIMINARE (SEPARATI DA VIRGOLA)", expand_x=True),
@@ -197,7 +197,7 @@ class GuiManager:
                 ],
                 [
                     simpleGui.Text("NOME DEL FILE PIXIL CHE VIENE GENERATO", expand_x=True),
-                    simpleGui.In(key="NAME_DEL", default_text="export.pixil", size=self.size_text_filename)
+                    simpleGui.In(key="NAME_DEL", default_text="remain.pixil", size=self.size_text_filename)
                 ],
                 [
                     simpleGui.Text("PREMI IL PULSANTE PER RIMUOVERE DAL FILE SORGENTE I LAYER SCELTI", expand_x=True),
@@ -249,33 +249,30 @@ class GuiManager:
 
     def command_read(self, values, print_file):
         if print_file:
-            print_file = str(Path(__file__).parent.resolve()) + "/workdir/out.txt"
+            print_file = "../workdir/out.txt"
         self.window["FILE_CTX"].update(work_pixil.print_all_layers(values, print_file), visible=True)
 
     def command_gen(self, source, template, print_file, num_file_gen):
         for i in range(int(num_file_gen)):
-            file_name, layer_ctx = work_pixil.gen_img(source, template, print_file, path_out=f"gen/final_{i}.png")
-            self.window["IMAGE_GEN"].update(filename=file_name)
+            file_path = f"../gen/final_{i}.png"
+            layer_ctx = work_pixil.gen_img(source, template, print_file, path_out=file_path)
+            self.window["IMAGE_GEN"].update(filename=file_path)
             self.window["FILE_CTX_GEN"].update(layer_ctx, visible=True)
 
     def command_merge(self, source, to_add, position, print_file):
         self.window['FILE_CTX_MERGE'].update(work_pixil.merge_pixil(source, to_add, int(position) - 1, print_file), visible=True)
 
     def command_ext(self, source, express, filename, print_file):
-        dest = str(Path(__file__).parent.resolve()) + "/workdir/" + filename
-        self.window['FILE_CTX_EXT'].update(work_pixil.extract_pixil(source, express, print_file, dest), visible=True)
+        self.window['FILE_CTX_EXT'].update(work_pixil.extract_pixil(source, express, print_file, f"../workdir/{filename}"), visible=True)
 
     def command_del(self, source, express, filename, print_file):
-        dest = str(Path(__file__).parent.resolve()) + "/workdir/" + filename
-        layer_del, layer_remain = work_pixil.delete_layer(source, express, print_file, dest)
+        layer_del, layer_remain = work_pixil.delete_layer(source, express, print_file, f"../workdir/{filename}")
         self.window['FILE_CTX_REMAIN'].update(layer_remain, visible=True)
         self.window['FILE_CTX_DEL'].update(layer_del, visible=True)
 
     @staticmethod
     def command_confirm_merge(filename):
-        dest = str(Path(__file__).parent.resolve()) + "/source/" + filename
-        source = str(Path(__file__).parent.resolve()) + "/workdir/merge_definitivo.pixil"
-        replace(source, dest)
+        replace("../workdir/merge_definitivo.pixil", f"../source/{filename}")
 
     def run_gui(self):
         while True:

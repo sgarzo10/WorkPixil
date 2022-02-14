@@ -3,6 +3,7 @@
 /gen/*
 /source/*
 /template/*
+/src/__pycache__/*
 .DS_Store
 /out.txt
 /workPixil.zip
