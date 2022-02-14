@@ -1,0 +1,43 @@
+{
+    "BACK_": {
+        "possibility": ["EMP"],
+        "dependency": null
+    },
+    "PE_": {
+        "possibility": ["BASE"],
+        "dependency": null
+    },
+    "SC_": {
+        "possibility": ["BASE"],
+        "dependency": null
+    },
+    "VE_": {
+        "possibility": ["BTC"],
+        "dependency": null
+    },
+    "CP": {
+        "_": {
+            "possibility": ["BTC"],
+            "dependency": ["CP_STR"]
+        }
+    },
+    "CAP_": {
+        "possibility": ["MR"],
+        "dependency": null
+    },
+    "OC": {
+        "_": {
+            "possibility": ["AZZ"],
+            "dependency": null
+        }
+    },
+    "AC": {
+        "C_": {
+            "possibility": ["BST_LNG"],
+            "dependency": null,
+            "extra": {
+                "BST_LNG": ["FUOCO"]
+            }
+        }
+    }
+}

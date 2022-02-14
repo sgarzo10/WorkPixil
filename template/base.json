@@ -1,0 +1,34 @@
+{
+    "BACK_": {
+        "possibility": ["EMP"],
+        "dependency": null
+    },
+    "PE_": {
+        "possibility": ["BASE"],
+        "dependency": null
+    },
+    "SC_": {
+        "possibility": [""],
+        "dependency": null
+    },
+    "VE_": {
+        "possibility": [""],
+        "dependency": null
+    },
+    "CP": {
+        "_": {
+            "possibility": [""],
+            "dependency": [""]
+        }
+    },
+    "CAP_": {
+        "possibility": ["NE", "GRC", "MR", "CS", "GL", "SS", "VRC", "VRS", "ROS", "BLU", "BLS", "VLS", "VLI", "GRS", "VRDISCO", "MIXGM", "MIXNG"],
+        "dependency": null
+    },
+    "OC": {
+        "_": {
+            "possibility": ["AZZ", "NERO", "MARR", "MX"],
+            "dependency": null
+        }
+    }
+}

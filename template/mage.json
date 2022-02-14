@@ -1,0 +1,78 @@
+{
+    "BACK_": {
+        "possibility": ["EMP"],
+        "dependency": null
+    },
+    "PE_": {
+        "possibility": ["NERO", "BASE", "CIN"],
+        "dependency": null
+    },
+    "SC_": {
+        "possibility": ["BASE", "ADIDAS", "CALCIO"],
+        "dependency": null
+    },
+    "VE_": {
+        "possibility": ["BASE", "BTC", "ETH", "BNB", "DOT", "LUNA", "SOL", "ADA"],
+        "dependency": null
+    },
+    "CP": {
+        "_": {
+            "possibility": ["BASE", "BTC", "ETH", "BNB", "DOT", "LUNA", "SOL", "ADA"],
+            "dependency": ["CP_STR"]
+        },
+        "C_": {
+            "possibility": ["BASE", "BTC", "ETH", "BNB", "DOT", "LUNA", "SOL", "ADA"],
+            "dependency": ["CP_STR"]
+        },
+        "B_": {
+            "possibility": ["BASE", "BTC", "ETH", "BNB", "DOT", "LUNA", "SOL", "ADA"],
+            "dependency": ["CP_STR"]
+        },
+        "E_": {
+            "possibility": ["MC", "COR"],
+            "dependency": null
+        }
+    },
+    "CAP_": {
+        "possibility": ["NE", "GRC", "MR", "CS", "GL", "SS", "VRC", "VRS", "ROS", "BLU", "BLS", "VLS", "VLI", "GRS", "VRDISCO", "MIXGM", "MIXNG"],
+        "dependency": null
+    },
+    "BC": {
+        "_": {
+            "possibility": ["JOINT", ""],
+            "dependency": null
+        }
+    },
+    "OC": {
+        "_": {
+            "possibility": ["AZZ", "NERO", "MARR", "MX"],
+            "dependency": null
+        },
+        "H_": {
+            "possibility": ["BASE", "BTC", "ETH", "BNB", "DOT", "LUNA", "SOL", "ADA","NERI", "VERDI"],
+            "dependency": null
+        },
+        "S_": {
+            "possibility": ["BASE", "BTC", "ETH", "BNB", "DOT", "LUNA", "SOL", "ADA"],
+            "dependency": null
+        }
+    },
+    "AC": {
+        "_": {
+            "possibility": ["BURGER", "BOMBA", "ASCIA"],
+            "dependency": null
+        },
+        "_LSR": {
+            "possibility": ["BASE", "BTC", "ETH", "BNB", "DOT"],
+            "dependency": null
+        },
+        "C_": {
+            "possibility": ["BST_LNG", "BST_CRT"],
+            "dependency": null,
+            "extra": {
+                "BST_LNG": ["EXT_FUOCO", "EXT_CRYSTAL", "EXT_STELLA", "EXT_MISSILE", "EXT_PIG", "EXT_PALLA"],
+                "BST_CRT": ["EXT_DRG_ORO", "EXT_PIG", "EXT_PALLA"]
+            }
+        }
+    }
+}
