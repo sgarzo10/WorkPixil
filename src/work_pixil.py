@@ -117,7 +117,7 @@ def extract_pixil(source, extract, print_file, path_out="../workdir/extract.pixi
     for layer in layer_extract:
         index = 1
         for c in ctx_src['frames'][0]['layers']:
-            if match(layer, c['name']):
+            if match(layer, c['name']) and c not in layer_list:
                 layer_list.append(c)
                 to_ret.append(f'{str(index)} - {c["name"]}')
                 to_write += f'{str(index)} - {c["name"]}\n'
@@ -132,6 +132,7 @@ def extract_pixil(source, extract, print_file, path_out="../workdir/extract.pixi
 def delete_layer(source, delete, print_file, path_out="../workdir/remain.pixil"):
     makedirs("../workdir", exist_ok=True)
     layer_list = []
+    layer_delete_list = []
     layer_delete = []
     to_write = ""
     to_ret = []
@@ -140,15 +141,17 @@ def delete_layer(source, delete, print_file, path_out="../workdir/remain.pixil")
     for s in delete.split(","):
         layer_delete.append(s)
     ctx_src = read_file(source)
-    for layer in layer_delete:
-        for c in ctx_src['frames'][0]['layers']:
-            if not match(layer, c['name']):
-                layer_list.append(c)
-                to_write_remain += f"{c['name']}\n"
-                to_ret_remain.append(c['name'])
-            else:
+    for c in ctx_src['frames'][0]['layers']:
+        for layer in layer_delete:
+            if match(layer, c['name']):
+                layer_delete_list.append(c)
                 to_write += f"{c['name']}\n"
                 to_ret.append(c['name'])
+    for c in ctx_src['frames'][0]['layers']:
+        if c not in layer_delete_list:
+            layer_list.append(c)
+            to_write_remain += f"{c['name']}\n"
+            to_ret_remain.append(c['name'])
     ctx_src['frames'][0]['layers'] = layer_list
     write_file(f"{path_out}", ctx_src, json=True)
     if print_file:
