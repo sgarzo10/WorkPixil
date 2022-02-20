@@ -15,25 +15,11 @@
         "possibility": ["BASE", "BTC", "ETH", "BNB", "DOT", "LUNA", "SOL", "ADA"],
         "dependency": null
     },
-    "CP": {
-        "_": {
-            "possibility": ["BASE", "BTC", "ETH", "BNB", "DOT", "LUNA", "SOL", "ADA"],
-            "dependency": ["CP_STR"]
-        },
-        "C_": {
-            "possibility": ["BASE", "BTC", "ETH", "BNB", "DOT", "LUNA", "SOL", "ADA"],
-            "dependency": ["CP_STR"]
-        },
-        "B_": {
-            "possibility": ["BASE", "BTC", "ETH", "BNB", "DOT", "LUNA", "SOL", "ADA"],
-            "dependency": ["CP_STR"]
-        },
-        "E_": {
-            "possibility": ["MC", "COR"],
-            "dependency": null
-        }
+    "LOGO": {
+        "possibility": ["BTC", "ETH", "BNB", "DOT", "LUNA", "SOL", "ADA"],
+        "dependency": null
     },
-    "CAP_": {
+    "BARBA_": {
         "possibility": ["NE", "GRC", "MR", "CS", "GL", "SS", "VRC", "VRS", "ROS", "BLU", "BLS", "VLS", "VLI", "GRS", "VRDISCO", "MIXGM", "MIXNG"],
         "dependency": null
     },
@@ -54,6 +40,24 @@
         },
         "S_": {
             "possibility": ["BASE", "BTC", "ETH", "BNB", "DOT", "LUNA", "SOL", "ADA"],
+            "dependency": null
+        }
+    },
+    "CP": {
+        "_": {
+            "possibility": ["BASE", "BTC", "ETH", "BNB", "DOT", "LUNA", "SOL", "ADA"],
+            "dependency": ["CP_STR"]
+        },
+        "C_": {
+            "possibility": ["BASE", "BTC", "ETH", "BNB", "DOT", "LUNA", "SOL", "ADA"],
+            "dependency": ["CP_STR"]
+        },
+        "B_": {
+            "possibility": ["BASE", "BTC", "ETH", "BNB", "DOT", "LUNA", "SOL", "ADA"],
+            "dependency": ["CP_STR"]
+        },
+        "E_": {
+            "possibility": ["MC", "COR"],
             "dependency": null
         }
     },

@@ -15,13 +15,11 @@
         "possibility": ["BTC"],
         "dependency": null
     },
-    "CP": {
-        "_": {
-            "possibility": ["BTC"],
-            "dependency": ["CP_STR"]
-        }
+    "LOGO": {
+        "possibility": ["BTC"],
+        "dependency": null
     },
-    "CAP_": {
+    "BARBA_": {
         "possibility": ["MR"],
         "dependency": null
     },
@@ -29,6 +27,12 @@
         "_": {
             "possibility": ["AZZ"],
             "dependency": null
+        }
+    },
+    "CP": {
+        "_": {
+            "possibility": ["BTC"],
+            "dependency": ["CP_STR"]
         }
     },
     "AC": {

@@ -4,25 +4,11 @@
         "dependency": null
     },
     "PE_": {
-        "possibility": ["BASE"],
+        "possibility": ["BASE", "NERO", "CIN"],
         "dependency": null
     },
-    "SC_": {
-        "possibility": [""],
-        "dependency": null
-    },
-    "VE_": {
-        "possibility": [""],
-        "dependency": null
-    },
-    "CP": {
-        "_": {
-            "possibility": [""],
-            "dependency": [""]
-        }
-    },
-    "CAP_": {
-        "possibility": ["NE", "GRC", "MR", "CS", "GL", "SS", "VRC", "VRS", "ROS", "BLU", "BLS", "VLS", "VLI", "GRS", "VRDISCO", "MIXGM", "MIXNG"],
+    "BARBA_": {
+        "possibility": ["NE", "GRC", "MR", "CS", "GL", "VRC", "VRS", "ROS", "GRS"],
         "dependency": null
     },
     "OC": {
