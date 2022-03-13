@@ -1,4 +1,4 @@
-from json import loads, dump
+from json import loads, dump, dumps
 from re import match
 from base64 import b64decode
 from PIL import Image
@@ -7,6 +7,9 @@ from random import choice
 from argparse import ArgumentParser, RawTextHelpFormatter
 from sys import exit
 from os import makedirs
+from os import remove
+from treelib import Node, Tree
+from dbmanager import DbManager
 
 
 def check_param_cli(op, source, layers, merge, pos, extract, delete):
@@ -45,6 +48,37 @@ def write_file(filename, ctx, json=False):
     return
 
 
+def check_start_word(init_word, keys):
+    to_ret = ""
+    for k in keys:
+        if init_word not in keys and match(k, init_word):
+            to_ret = k
+    return to_ret
+
+
+def get_init_word(source):
+    words = {}
+    filename = "tree.txt"
+    tree = Tree()
+    tree.create_node("INIT", "init")
+    for c in read_file(source)["frames"][0]['layers']:
+        init_word = c["name"].split("_")[0]
+        second_word = ''.join(i for i in c["name"].split("_")[1:])
+        if init_word not in words.keys():
+            words[init_word] = {}
+            tree.create_node(str("{:5d}".format(len(words.keys()))) + init_word, init_word, parent="init")
+        '''
+        if second_word not in words[init_word].keys():
+            words[init_word][second_word] = {}
+            tree.create_node(str("{:5d}".format(len(words[init_word].keys()))) + second_word, init_word+second_word, parent=init_word)
+        '''
+    tree.save2file(filename)
+    ctx = read_file(filename, False)
+    remove(filename)
+    print(ctx)
+    return ''.join([i for i in ctx if not i.isdigit() and i != ' '])
+
+
 def print_all_layers(source, print_file=False):
     makedirs("../workdir", exist_ok=True)
     to_ret = []
@@ -65,6 +99,14 @@ def gen_img(source, layers, print_file, path_out="../gen/final.png"):
     final_layers = []
     to_write = ""
     to_ret = []
+    query = "SELECT * FROM LAYER_STATS WHERE "
+    total_stats = {
+        "stamina": 0,
+        "attack": 0,
+        "defense": 0,
+        "precision": 0,
+        "speed": 0
+    }
     ctx_source = read_file(source)
     ctx_layers = read_file(layers)
     for key, val in ctx_layers.items():
@@ -74,11 +116,14 @@ def gen_img(source, layers, print_file, path_out="../gen/final.png"):
             value = choice(val[key_r]['possibility'])
             dependency = val[key_r]['dependency']
             key += key_r
+            query += f"(CATEGORY = '{key[:-1]}' AND SUB_CATEGORY = '{value}') OR "
             if 'extra' in val[key_r].keys():
                 extra = choice(val[key_r]['extra'][value])
+                query += f"(CATEGORY = '{extra.split('_')[0]}' AND SUB_CATEGORY = '{extra.split('_')[1]}') OR "
         else:
             value = choice(val['possibility'])
             dependency = val['dependency']
+            query += f"(CATEGORY = '{key[:-1]}' AND SUB_CATEGORY = '{value}') OR "
         index = 1
         for c in ctx_source['frames'][0]['layers']:
             if (c['name'].find(key) == 0 and c['name'].find(value) > 0) or (dependency is not None and c['name'] in dependency) or (extra is not None and c['name'].find(extra) == 0):
@@ -86,9 +131,18 @@ def gen_img(source, layers, print_file, path_out="../gen/final.png"):
                 to_ret.append(f"{index} - {c['name']}")
                 final_layers.append(Image.open(BytesIO(b64decode(c['src'].split(",")[1]))))
             index += 1
+    query = query[:-4] + ";"
+    DbManager()
+    stats = DbManager.select(query)
+    for stat in stats:
+        for key, value in stat.items():
+            if key in total_stats.keys():
+                total_stats[key] += value
+    DbManager.close_db()
     for lay in final_layers[1:]:
         final_layers[0].paste(lay, (0, 0), lay)
     final_layers[0].save(f"{path_out}")
+    write_file(f"{path_out.split('.png')[0]}.json", dumps({"items": stats, "total": total_stats}, indent=4))
     if print_file:
         write_file(f"{path_out.split('.png')[0]}.txt", to_write)
     return to_ret

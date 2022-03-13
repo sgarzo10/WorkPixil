@@ -6,3 +6,6 @@
 .DS_Store
 /out.txt
 /workPixil.zip
+/start.sh
+/src/create.sql
+/src/workpixil.db

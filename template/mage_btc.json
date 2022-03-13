@@ -15,7 +15,7 @@
         "possibility": ["BTC"],
         "dependency": null
     },
-    "LOGO": {
+    "LOGO_": {
         "possibility": ["BTC"],
         "dependency": null
     },
@@ -40,7 +40,7 @@
             "possibility": ["BST_LNG"],
             "dependency": null,
             "extra": {
-                "BST_LNG": ["FUOCO"]
+                "BST_LNG": ["EXT_FUOCO"]
             }
         }
     }

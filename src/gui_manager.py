@@ -54,10 +54,23 @@ class GuiManager:
                     simpleGui.HorizontalSeparator()
                 ],
                 [
-                    simpleGui.Text("LAYER (IN ORDINE) CONTENUTI NEL FILE SELEZIONATO"),
-                ],
-                [
-                    simpleGui.Listbox(values=[], select_mode=simpleGui.LISTBOX_SELECT_MODE_EXTENDED, key="FILE_CTX", visible=False, size=self.size_listbox)
+                    simpleGui.Column([
+                        [
+                            simpleGui.Text("LAYER (IN ORDINE) CONTENUTI NEL FILE"),
+                        ],
+                        [
+                            simpleGui.Listbox(values=[], select_mode=simpleGui.LISTBOX_SELECT_MODE_EXTENDED,
+                                              key="FILE_CTX", visible=False, size=self.size_listbox)
+                        ]
+                    ], expand_y=True, expand_x=True),
+                    simpleGui.Column([
+                        [
+                            simpleGui.Text("ALBERATURA DEI LAYER CONTENUTI NEL FILE"),
+                        ],
+                        [
+                            simpleGui.Text(key="INIT_WORD")
+                        ]
+                    ], expand_y=True, expand_x=True)
                 ]
             ],
             "COL_GEN": [
@@ -247,10 +260,11 @@ class GuiManager:
             self.window[f'COL_{str.upper(operation)}'].update(visible=True)
             self.window['LBL_HELP'].update(self.config['strings'][f'{operation}_lbl_help'])
 
-    def command_read(self, values, print_file):
+    def command_read(self, source, print_file):
         if print_file:
             print_file = "../workdir/out.txt"
-        self.window["FILE_CTX"].update(work_pixil.print_all_layers(values, print_file), visible=True)
+        self.window["FILE_CTX"].update(work_pixil.print_all_layers(source, print_file), visible=True)
+        self.window["INIT_WORD"].update(work_pixil.get_init_word(source), visible=True)
 
     def command_gen(self, source, template, print_file, num_file_gen):
         for i in range(int(num_file_gen)):
