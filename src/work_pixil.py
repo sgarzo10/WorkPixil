@@ -135,19 +135,16 @@ def gen_img(source, layers, print_file, path_out="../gen/final.png", path_db='')
         query = query[:-4] + ";"
         DbManager(path_db + "workpixil.db")
         stats = DbManager.select(query)
-        items = {}
         for stat in stats:
-            items[f"{stat['category']}_{stat['sub_category']}"] = {}
             for key, value in stat.items():
                 if key in total_stats.keys():
-                    items[f"{stat['category']}_{stat['sub_category']}"][key] = value
                     total_stats[key] += value
         DbManager.close_db()
         for lay in final_layers[1:]:
             final_layers[0].paste(lay, (0, 0), lay)
         final_layers[0].save(f"{path_out}")
         # write_file(f"{path_out.split('.png')[0]}.json", dumps({"items": stats, "total": total_stats}, indent=4))
-        to_ret["json"] = {"items": items, "total": total_stats}
+        to_ret["json"] = {"items": stats, "total": total_stats}
         if print_file:
             write_file(f"{path_out.split('.png')[0]}.txt", to_write)
     except Exception as e:
