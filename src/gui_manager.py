@@ -269,7 +269,7 @@ class GuiManager:
     def command_gen(self, source, template, print_file, num_file_gen):
         for i in range(int(num_file_gen)):
             file_path = f"../gen/final_{i}.png"
-            layer_ctx = work_pixil.gen_img(source, template, print_file, path_out=file_path)
+            layer_ctx = work_pixil.gen_img(source, template, print_file, path_out=file_path)["layers"]
             self.window["IMAGE_GEN"].update(filename=file_path)
             self.window["FILE_CTX_GEN"].update(layer_ctx, visible=True)
 

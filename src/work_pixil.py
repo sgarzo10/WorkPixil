@@ -9,7 +9,7 @@ from sys import exit
 from os import makedirs
 from os import remove
 from treelib import Node, Tree
-from dbmanager import DbManager
+from WorkPixil.src.dbmanager import DbManager
 
 
 def check_param_cli(op, source, layers, merge, pos, extract, delete):
@@ -93,12 +93,12 @@ def print_all_layers(source, print_file=False):
     return to_ret
 
 
-def gen_img(source, layers, print_file, path_out="../gen/final.png"):
+def gen_img(source, layers, print_file, path_out="../gen/final.png", path_db=''):
     # ctx_json['frames'][0]['layers'].reverse()
-    makedirs("../gen", exist_ok=True)
+    makedirs('/'.join(path_out.split("/")[:-1]), exist_ok=True)
     final_layers = []
     to_write = ""
-    to_ret = []
+    to_ret = {"layers": []}
     query = "SELECT * FROM LAYER_STATS WHERE "
     total_stats = {
         "stamina": 0,
@@ -107,44 +107,51 @@ def gen_img(source, layers, print_file, path_out="../gen/final.png"):
         "precision": 0,
         "speed": 0
     }
-    ctx_source = read_file(source)
-    ctx_layers = read_file(layers)
-    for key, val in ctx_layers.items():
-        extra = None
-        if 'possibility' not in val.keys():
-            key_r = choice(list(val.keys()))
-            value = choice(val[key_r]['possibility'])
-            dependency = val[key_r]['dependency']
-            key += key_r
-            query += f"(CATEGORY = '{key[:-1]}' AND SUB_CATEGORY = '{value}') OR "
-            if 'extra' in val[key_r].keys():
-                extra = choice(val[key_r]['extra'][value])
-                query += f"(CATEGORY = '{extra.split('_')[0]}' AND SUB_CATEGORY = '{extra.split('_')[1]}') OR "
-        else:
-            value = choice(val['possibility'])
-            dependency = val['dependency']
-            query += f"(CATEGORY = '{key[:-1]}' AND SUB_CATEGORY = '{value}') OR "
-        index = 1
-        for c in ctx_source['frames'][0]['layers']:
-            if (c['name'].find(key) == 0 and c['name'].find(value) > 0) or (dependency is not None and c['name'] in dependency) or (extra is not None and c['name'].find(extra) == 0):
-                to_write += f"{index} - {c['name']}\n"
-                to_ret.append(f"{index} - {c['name']}")
-                final_layers.append(Image.open(BytesIO(b64decode(c['src'].split(",")[1]))))
-            index += 1
-    query = query[:-4] + ";"
-    DbManager()
-    stats = DbManager.select(query)
-    for stat in stats:
-        for key, value in stat.items():
-            if key in total_stats.keys():
-                total_stats[key] += value
-    DbManager.close_db()
-    for lay in final_layers[1:]:
-        final_layers[0].paste(lay, (0, 0), lay)
-    final_layers[0].save(f"{path_out}")
-    write_file(f"{path_out.split('.png')[0]}.json", dumps({"items": stats, "total": total_stats}, indent=4))
-    if print_file:
-        write_file(f"{path_out.split('.png')[0]}.txt", to_write)
+    try:
+        ctx_source = read_file(source)
+        ctx_layers = read_file(layers)
+        for key, val in ctx_layers.items():
+            extra = None
+            if 'possibility' not in val.keys():
+                key_r = choice(list(val.keys()))
+                value = choice(val[key_r]['possibility'])
+                dependency = val[key_r]['dependency']
+                key += key_r
+                query += f"(CATEGORY = '{key[:-1]}' AND SUB_CATEGORY = '{value}') OR "
+                if 'extra' in val[key_r].keys():
+                    extra = choice(val[key_r]['extra'][value])
+                    query += f"(CATEGORY = '{extra.split('_')[0]}' AND SUB_CATEGORY = '{extra.split('_')[1]}') OR "
+            else:
+                value = choice(val['possibility'])
+                dependency = val['dependency']
+                query += f"(CATEGORY = '{key[:-1]}' AND SUB_CATEGORY = '{value}') OR "
+            index = 1
+            for c in ctx_source['frames'][0]['layers']:
+                if (c['name'].find(key) == 0 and c['name'].find(value) > 0) or (dependency is not None and c['name'] in dependency) or (extra is not None and c['name'].find(extra) == 0):
+                    to_write += f"{index} - {c['name']}\n"
+                    to_ret["layers"].append(f"{index} - {c['name']}")
+                    final_layers.append(Image.open(BytesIO(b64decode(c['src'].split(",")[1]))))
+                index += 1
+        query = query[:-4] + ";"
+        DbManager(path_db + "workpixil.db")
+        stats = DbManager.select(query)
+        items = {}
+        for stat in stats:
+            items[f"{stat['category']}_{stat['sub_category']}"] = {}
+            for key, value in stat.items():
+                if key in total_stats.keys():
+                    items[f"{stat['category']}_{stat['sub_category']}"][key] = value
+                    total_stats[key] += value
+        DbManager.close_db()
+        for lay in final_layers[1:]:
+            final_layers[0].paste(lay, (0, 0), lay)
+        final_layers[0].save(f"{path_out}")
+        # write_file(f"{path_out.split('.png')[0]}.json", dumps({"items": stats, "total": total_stats}, indent=4))
+        to_ret["json"] = {"items": items, "total": total_stats}
+        if print_file:
+            write_file(f"{path_out.split('.png')[0]}.txt", to_write)
+    except Exception as e:
+        to_ret = str(e)
     return to_ret
 
 

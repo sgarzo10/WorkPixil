@@ -1,19 +1,23 @@
 from sqlite3 import Error, connect
 from logging import info
-from datetime import datetime
-from json import loads, dumps
 
 
 class DbManager:
     db = None
 
-    def __init__(self):
-        DbManager.db = connect('workpixil.db', check_same_thread=False)
-        DbManager.db.isolation_level = None
+    def __init__(self, path_db):
+        try:
+            DbManager.db = connect(path_db, check_same_thread=False)
+            DbManager.db.isolation_level = None
+        except Error:
+            raise
 
     @staticmethod
     def close_db():
-        DbManager.db.close()
+        try:
+            DbManager.db.close()
+        except Error:
+            raise
 
     @staticmethod
     def row_to_dict(cursor, row):
